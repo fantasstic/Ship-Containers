@@ -2684,9 +2684,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _tower: {fileID: 84836628}
-  hookSpeed: 10
+  hookSpeed: 5
   boxPrefab: {fileID: 4693066859197714384, guid: 04398fc568dea0c48b88e4e624eed7b8, type: 3}
   spawnPoint: {fileID: 98730437}
+  boxSprites:
+  - {fileID: 21300000, guid: 841685065cc19c4449fca51122a44ae9, type: 3}
+  - {fileID: 21300000, guid: d3099bb5dc9e67643a1f984016f60023, type: 3}
+  - {fileID: 21300000, guid: 0d34fc717e5341b4bbdb902d24751a24, type: 3}
+  - {fileID: 21300000, guid: c7ecd599229b0824e99f6cb71626d0cf, type: 3}
+  - {fileID: 21300000, guid: c2080dd2521e43146bd827675f08d96c, type: 3}
+  - {fileID: 21300000, guid: ccf75285544039d409190b3733555718, type: 3}
+  - {fileID: 21300000, guid: db9be3c24a92bd14ebb7f6e7c3561148, type: 3}
 --- !u!212 &1707747262
 SpriteRenderer:
   m_ObjectHideFlags: 0

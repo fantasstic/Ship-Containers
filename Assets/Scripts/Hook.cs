@@ -9,6 +9,7 @@ public class Hook : MonoBehaviour
     public float hookSpeed = 2.0f; // Скорость движения крюка
     public GameObject boxPrefab; // Префаб коробки
     public Transform spawnPoint; // Место, где будут спавниться коробки
+    public Sprite[] boxSprites; // Массив спрайтов для коробок
     private GameObject currentBox; // Текущая коробка, закрепленная на крюке
 
     private bool isMovingLeft = true; // Флаг, чтобы определить, движется ли крюк влево
@@ -51,16 +52,29 @@ public class Hook : MonoBehaviour
         {
             _gameController.AddScore();
             ReleaseBox();
-            Invoke("MoveCamera", 1f);
+            StartCoroutine(MoveCamera());
+            /*Invoke("MoveCamera", 1f);*/
             
             Invoke("SpawnBox", 1.5f);
         }
     }
 
-    private void MoveCamera()
+    private IEnumerator MoveCamera()
     {
-        var newCameraPosition = Camera.main.transform.position.y + 1.7f;
-        Camera.main.transform.position = new Vector3(Camera.main.transform.position.x, newCameraPosition, Camera.main.transform.position.z);
+        float duration = 1.0f; // Продолжительность плавного перемещения
+        float elapsedTime = 0;
+        Vector3 startingPosition = Camera.main.transform.position;
+        Vector3 targetPosition = new Vector3(Camera.main.transform.position.x, Camera.main.transform.position.y + 1.7f, Camera.main.transform.position.z);
+
+        while (elapsedTime < duration)
+        {
+            Camera.main.transform.position = Vector3.Lerp(startingPosition, targetPosition, (elapsedTime / duration));
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        // Убедитесь, что камера достигла целевой позиции
+        Camera.main.transform.position = targetPosition;
     }
 
     void SpawnBox()
@@ -68,6 +82,17 @@ public class Hook : MonoBehaviour
         // Создаем и спавним коробку на месте крюка и закрепляем ее на крюке
         currentBox = Instantiate(boxPrefab, spawnPoint.position, Quaternion.identity);
         currentBox.transform.parent = transform;
+
+        // Выбираем случайный спрайт для коробки
+        if (boxSprites.Length > 0)
+        {
+            int randomIndex = Random.Range(0, boxSprites.Length);
+            SpriteRenderer spriteRenderer = currentBox.GetComponent<SpriteRenderer>();
+            if (spriteRenderer != null)
+            {
+                spriteRenderer.sprite = boxSprites[randomIndex];
+            }
+        }
     }
 
     void ReleaseBox()
